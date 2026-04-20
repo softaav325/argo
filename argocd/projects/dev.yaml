@@ -4,7 +4,7 @@ metadata:
   name: development
   namespace: argocd
   finalizers:
-    - argoproj.io/resources-finalizer  # ← Исправлено: домен/путь
+    - argoproj.io/resources-finalizer  
 spec:
   description: Project containing development environment services
   sourceRepos:

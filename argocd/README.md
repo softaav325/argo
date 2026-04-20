@@ -2,7 +2,13 @@
 
 ```kubectl create namespace argocd```
 
-```kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml```
+# Добавьте репозиторий
+helm repo add argo https://argoproj.github.io/argo-helm
+helm repo update
+
+# Установите Argo CD с включением CRD
+ helm install argocd argo/argo-cd --namespace argocd \
+  --set controller.metrics.enabled=true
 
 ## Access The Argo CD API Server
 
@@ -11,3 +17,7 @@
 ## Login Using The CLI
 
 ```kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo```
+
+
+
+
