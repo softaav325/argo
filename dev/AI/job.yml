@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mnist-training-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: trainer
+        image: yourname/mnist-classifier:v1
+        command: ["python", "train.py"]
+        envFrom:
+        - configMapRef:
+            name: mnist-training-config
+        volumeMounts:
+        - name: model-output
+          mountPath: /output
+      volumes:
+      - name: model-output
+        emptyDir: {}
+      restartPolicy: Never
+  backoffLimit: 2
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mnist-training-config
+data:
+  EPOCHS: "10"
+  BATCH_SIZE: "64"
+  LEARNING_RATE: "0.01"
