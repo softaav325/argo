@@ -1,5 +1,0 @@
-FROM python:3.9-slim
-RUN pip install flask torch torchvision numpy
-COPY src/inference.py .
-EXPOSE 5000
-CMD ["python", "inference.py"]

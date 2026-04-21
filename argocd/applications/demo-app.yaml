@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://github.com/softaav325/argo.git
     targetRevision: main                                      
-    path: dev/kuber
+    path: k8s #dev/kuber
 
     # helm:
     #   # Extra parameters to set (same as setting through values.yaml, but these take precedence)

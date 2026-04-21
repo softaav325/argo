@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-sentiment-demo
+  namespace: demo # Или создай отдельный namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ml-sentiment-demo
+  template:
+    metadata:
+      labels:
+        app: ml-sentiment-demo
+    spec:
+      containers:
+      - name: ml-app
+        image: sentiment-demo:latest 
+        ports:
+        - containerPort: 7860
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 7860
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 7860
+          initialDelaySeconds: 5
+          periodSeconds: 5
