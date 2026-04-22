@@ -17,23 +17,23 @@ resources:
     cpu: "1"
 
 
-# Проба живости (жив ли процесс вообще)
-livenessProbe:
-  httpGet:
-    path: /
-    port: 7860
-  initialDelaySeconds: 60  # Ждем 60 секунд, давая модели время загрузиться в память
-  periodSeconds: 20
-  failureThreshold: 3
+# # Проба живости (жив ли процесс вообще)
+# livenessProbe:
+#   httpGet:
+#     path: /
+#     port: 7860
+#   initialDelaySeconds: 60  # Ждем 60 секунд, давая модели время загрузиться в память
+#   periodSeconds: 20
+#   failureThreshold: 3
 
-# Проба готовности (когда под готов принимать трафик)
-readinessProbe:
-  httpGet:
-    path: /
-    port: 7860
-  initialDelaySeconds: 30  # Ждем 30 секунд после старта контейнера перед первой проверкой
-  periodSeconds: 10        # Проверяем каждые 10 секунд
-  failureThreshold: 3      # Допускаем 3 неудачи перед рестартом
+# # Проба готовности (когда под готов принимать трафик)
+# readinessProbe:
+#   httpGet:
+#     path: /
+#     port: 7860
+#   initialDelaySeconds: 30  # Ждем 30 секунд после старта контейнера перед первой проверкой
+#   periodSeconds: 10        # Проверяем каждые 10 секунд
+#   failureThreshold: 3      # Допускаем 3 неудачи перед рестартом
 
 
   
