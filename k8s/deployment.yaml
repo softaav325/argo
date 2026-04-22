@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: ml-app
-        image: sentiment-demo:latest 
+        image: dockerhabaav/sentiment-demo:latest
         ports:
         - containerPort: 7860
         resources:
