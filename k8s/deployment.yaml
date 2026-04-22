@@ -16,6 +16,7 @@ spec:
       containers:
       - name: ml-app
         image: dockerhabaav/sentiment-demo:latest
+        imagePullPolicy: Never   
         ports:
         - containerPort: 7860
         resources:
