@@ -32,8 +32,10 @@ COPY app/train.py .
 # Копируем только артефакты модели (файл yesenin.txt тут не нужен)
 COPY --from=builder /build/model_artifacts ./model_artifacts
 
-RUN chown -R 1001:1001 /app
-USER appuser
+# Вместо useradd/adduser попробуй эту связку:
+RUN useradd -m -u 1001 -s /bin/bash appuser && \
+    chown -R 1001:1001 /app
+USER 1001
 
 EXPOSE 7860
 
