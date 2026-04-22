@@ -14,14 +14,14 @@ demo/
 │   ├── model_wrapper.py  # Обертка для загрузки модели
 │   └── gradio_app.py     # Веб-интерфейс
 ├── Dockerfile
-├── requirements.txt
+├── requirements-build.txt
+├── requirements-run.txt
 ├── k8s/
 │   ├── deployment.yaml
 │   ├── service.yaml
-│   └── ingress.yaml      # Опционально, если есть Ingress Controller
 └── README.md
 
-
+Dockerfile - multistage сборка Fine-tuning легкой модели для классификации тональности отзывов
 
 app/train.py
 Этот скрипт тренирует модель на небольшом датасете. Для скорости используем синтетические данные или маленький subset.
