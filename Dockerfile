@@ -31,7 +31,9 @@ COPY app/model_wrapper.py .
 
 COPY --from=builder /build/model_artifacts ./model_artifacts
 
-RUN useradd -m -u 1001 appuser
+RUN useradd -m -u 1001 appuser \
+    && chown -R 1001:1001 /app
+
 USER appuser
 
 EXPOSE 7860

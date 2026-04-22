@@ -1,0 +1,29 @@
+replicaCount: 1
+
+image:
+  repository: dockerhabaav/sentiment-demo
+  tag: "latest"
+  pullPolicy: Never   
+
+ports:
+  containerPort: 7860
+
+resources:
+  requests:
+    memory: "1Gi"
+    cpu: "500m"
+  limits:
+    memory: "2Gi"
+    cpu: "1"
+livenessProbe:
+  httpGet:
+    path: /
+    port: 7860
+  initialDelaySeconds: 30
+  periodSeconds: 10
+readinessProbe:
+  httpGet:
+    path: /
+    port: 7860
+  initialDelaySeconds: 5
+  periodSeconds: 5

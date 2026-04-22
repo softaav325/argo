@@ -12,29 +12,27 @@ spec:
   source:
     repoURL: https://github.com/softaav325/argo.git
     targetRevision: main                                      
-    path: k8s #dev/kuber
+    path: chart # k8s - папка с yml
 
-    # helm:
-    #   # Extra parameters to set (same as setting through values.yaml, but these take precedence)
-    #   parameters:
-    #   - name: "service.port"
-    #     value: "8082"
-    #   # - name: "replicaCount"
-    #   #   value: "4"
+    helm:
+      # Extra parameters to set (same as setting through values.yaml, but these take precedence)
+      parameters:
+      - name: "service.port"
+        value: "80"
+      # - name: "replicaCount"
+      #   value: "4"
+    # Helm values files for overriding values in the helm chart
+    # The path is relative to the spec.source.path directory defined above
+      valueFiles:
+      - ../values/values-demo.yaml
 
-    #   # Helm values files for overriding values in the helm chart
-    #   # The path is relative to the spec.source.path directory defined above
-    #   valueFiles:
-    #   - values-dev.yaml
-
-    #   # Values file as block file
-    #   values: |
-    #     # replicaCount: 2
-    #     serviceAccount:
-    #       create: true
-    #       annotations:
-    #         demo/role: demo-annotation
-    #       name: sa-custom-name
+      # Values file as block file - либо так
+      values: |
+        serviceAccount:
+          create: true
+          annotations:
+            demo/role: demo-annotation
+          name: sa-custom-name
 
   # Destination cluster and namespace to deploy the application
   destination:
@@ -45,8 +43,7 @@ spec:
   # Sync policy
   syncPolicy:
     automated:
-      prune: true # синхронизирует состояние с репозиторием (удаляет/добавляет)
+      prune: true # синхронизирует кубер с репозиторием, разрешаем удалять/добавлять ресурсы
       selfHeal: true # позволяет изменять (argo не восстанавливает изменения)
-    # создается неймспес, если его нет
     syncOptions:
-    - CreateNamespace=true
+    - CreateNamespace=true     # создается неймспес, если его нет
