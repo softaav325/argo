@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: aikoder:latest  #dockerhabaav/sentiment-demo
+  repository: aikoder  #dockerhabaav/sentiment-demo
   tag: "latest"
   pullPolicy: Never   
 
