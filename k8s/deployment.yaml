@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ml-sentiment-demo
+  name: ml-demo
   namespace: demo # Или создай отдельный namespace
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ml-sentiment-demo
+      app: ml-demo
   template:
     metadata:
       labels:
-        app: ml-sentiment-demo
+        app: ml-demo
     spec:
       containers:
       - name: ml-app
-        image: dockerhabaav/sentiment-demo:latest
+        image: demo:latest
         imagePullPolicy: Never   
         ports:
         - containerPort: 7860

@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ml-sentiment-service
+  name: ml-service
 spec:
   selector:
-    app: ml-sentiment-demo
+    app: ml-demo
   ports:
     - protocol: TCP
       port: 80
