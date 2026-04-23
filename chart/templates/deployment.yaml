@@ -37,6 +37,22 @@ spec:
             - name: http
               containerPort: {{ .Values.ports.containerPort }}
               protocol: TCP
+          {{- if .Values.health.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            periodSeconds: 20
+            failureThreshold: 3
+            initialDelaySeconds: 60
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30 
+            periodSeconds: 10       
+            failureThreshold: 3    
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
