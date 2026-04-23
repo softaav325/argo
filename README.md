@@ -6,27 +6,46 @@
 
 [Multiple configuration objects](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#multiple-configuration-objects)
 
+Структура репозитория:
 
-
-demo/
+AI-emotion/
 ├── app/
 │   ├── train.py          # Скрипт тренировки
 │   ├── model_wrapper.py  # Обертка для загрузки модели
 │   └── gradio_app.py     # Веб-интерфейс
 ├── Dockerfile
 ├── requirements-build.txt
-├── requirements-run.txt
-├── k8s/
-│   ├── deployment.yaml
-│   ├── service.yaml
+├── requirements-run.t
 └── README.md
 
-Dockerfile - multistage сборка Fine-tuning легкой модели для классификации тональности отзывов
+AI-koder/
+├── app/
+│   ├── train.py          # Скрипт тренировки
+│   ├── model_wrapper.py  # Обертка для загрузки модели
+│   └── gradio_app.py     # Веб-интерфейс
+├── Dockerfile
+├── requirements-build.txt
+├── requirements-run.t
+└── README.md
 
-app/train.py
-Этот скрипт тренирует модель на небольшом датасете. Для скорости используем синтетические данные или маленький subset.
 
-app/gradio_app.py
-Это веб-интерфейс. Он загружает обученную модель и предоставляет интерфейс для ввода текста.
+AI-emotion/
+├── app/
+│   ├── train.py          # Скрипт тренировки
+│   ├── model_wrapper.py  # Обертка для загрузки модели
+│   └── gradio_app.py     # Веб-интерфейс
+├── Dockerfile
+├── requirements-build.txt
+├── requirements-run.t
+└── README.md
 
-Сборка локально ```docker build -t demo:latest .```
+
+
+Локальная сборка образов: 
+``` git clone https://github.com/softaav325/argo.git ```
+
+Переход в нужную папку для сборки
+``` cd <dir> ```    
+
+Сборка
+``` docker build -t demo:latest .```
