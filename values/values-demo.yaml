@@ -17,7 +17,7 @@ resources:
     cpu: "1"
 
 health:
- enabled 
+ enabled: true 
 
 # Проба живости (жив ли процесс вообще)
 # livenessProbe:
