@@ -1,50 +1,59 @@
-import os
 import torch
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
-import logging
+import torch.nn as nn
+import json
+import os
+from train import TextGeneratorModel # Импортируем класс модели из train.py
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-class SentimentModel:
-    def __init__(self, model_path: str = "./model_artifacts"):
+class GeneratorWrapper:
+    def __init__(self, model_path="./model_artifacts"):
         self.model_path = model_path
         self.model = None
-        self.tokenizer = None
-        # Определяем устройство (CPU для этого демо)
+        self.idx_to_char = {}
+        self.char_to_idx = {}
         self.device = torch.device("cpu")
-        
+
     def load(self):
         if self.model is not None:
             return
-
-        if not os.path.exists(self.model_path):
-            raise FileNotFoundError(f"Model not found at {self.model_path}")
-
-        logger.info("Loading model...")
-        self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
-        self.model = AutoModelForSequenceClassification.from_pretrained(self.model_path)
+        
+        with open(os.path.join(self.model_path, "meta.json"), "r", encoding="utf-8") as f:
+            meta = json.load(f)
+            
+        self.idx_to_char = {int(k): v for k, v in meta["idx_to_char"].items()}
+        self.char_to_idx = meta["char_to_idx"]
+        vocab_size = meta["vocab_size"]
+        
+        self.model = TextGeneratorModel(vocab_size)
+        self.model.load_state_dict(torch.load(os.path.join(self.model_path, "model.pth"), map_location=self.device))
         self.model.to(self.device)
         self.model.eval()
-        logger.info("Model loaded.")
 
-    def predict(self, text: str) -> str:
-        if self.model is None:
-            self.load()
-
-        inputs = self.tokenizer(text, return_tensors="pt", truncation=True, padding=True, max_length=128)
-        inputs = {k: v.to(self.device) for k, v in inputs.items()}
-
-        with torch.no_grad():
-            outputs = self.model(**inputs)
+    def generate(self, seed_text, length=200, temperature=0.8):
+        self.load()
         
-        probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
-        pos_score = probs[0][1].item()
-        neg_score = probs[0][0].item()
+        # Подготовка входных данных
+        input_seq = [self.char_to_idx.get(ch, 0) for ch in seed_text]
+        
+        current_input = torch.tensor([input_seq[-50:]], dtype=torch.long).to(self.device)
+        generated = list(seed_text)
+        
+        hidden = None
+        
+        with torch.no_grad():
+            for _ in range(length):
+                output, hidden = self.model(current_input, hidden)
+                
+                last_output = output[0, -1, :] / temperature
+                probs = torch.softmax(last_output, dim=0)
+                
+                next_idx = torch.multinomial(probs, 1).item()
+                next_char = self.idx_to_char.get(next_idx, "")
+                
+                generated.append(next_char)
+                
+                current_input = torch.tensor([[next_idx]], dtype=torch.long).to(self.device)
+                
+        return "".join(generated)
 
-        if pos_score > neg_score:
-            return f"😊 Позитив ({pos_score:.2%})"
-        else:
-            return f"😠 Негатив ({neg_score:.2%})"
-
-model_wrapper = SentimentModel()
+# Создаем глобальный экземпляр
+generator = GeneratorWrapper()

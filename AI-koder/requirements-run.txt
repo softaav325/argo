@@ -1,4 +1,6 @@
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch
-gradio
+transformers
+gradio>=4.0.0
 numpy
+huggingface_hub>=0.20.0
